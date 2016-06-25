@@ -3,10 +3,12 @@ var _ = require('lodash');
 var gutil = require('gulp-util');
 var through = require('through2');
 var nunjucks = require('nunjucks');
+var path = require('path');
 
 var defaults = {
     path: '.',
     ext: '.html',
+    filename: '',
     data: {},
     inheritExtension: false,
     envOptions: {
@@ -65,6 +67,9 @@ module.exports = function (options) {
         // only if inherit extension flag is not provided(truthy)
         if (!options.inheritExtension) {
           file.path = gutil.replaceExtension(filePath, options.ext);
+        }
+        if (options.filename) {
+          file.path = path.join(path.dirname(file.path), options.filename);
         }
         _this.push(file);
         cb();
